@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-
 class FileAccess {
   constructor(rootFolder) {
     this.rootFolder = rootFolder;
@@ -12,13 +11,13 @@ class FileAccess {
   // Method to upload a file
   async uploadFile(file) {
     const publicKey = uuidv4();
-    const privateFileName = `${publicKey}_${file.originalname}`;
-    const privatePath = path.join(this.rootFolder, privateFileName);
+    const publicFileName = `${publicKey}_${file.originalname}`;
+    const filePath = path.join(this.rootFolder, publicFileName);
 
     // Write the file to the specified path
-    await fs.promises.writeFile(privatePath, file.buffer);
+    await fs.promises.writeFile(filePath, file.buffer);
 
-    return { publicKey, privateKey: privateFileName };
+    return { publicKey, filePath };
   }
 
   // Method to download a file
