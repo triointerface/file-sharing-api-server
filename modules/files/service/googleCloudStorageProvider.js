@@ -1,7 +1,6 @@
 // googleCloudStorageProvider.js
 
-const { Storage } = require('@google-cloud/storage');
-const fs = require('fs').promises;
+import { Storage } from '@google-cloud/storage';
 
 class GoogleCloudStorageProvider {
   constructor(configPath) {
@@ -51,4 +50,4 @@ class GoogleCloudStorageProvider {
   }
 }
 
-module.exports = GoogleCloudStorageProvider;
+export default GoogleCloudStorageProvider;
