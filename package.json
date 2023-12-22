@@ -7,12 +7,18 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "migrate:make": "knex migrate:make $1 --knexfile=./knexfile.js",
     "migrate:up": "knex migrate:latest --knexfile=./knexfile.js",
     "migrate:down": "knex migrate:down $1 --knexfile=./knexfile.js",
     "seed:make": "knex seed:make $1 --knexfile=./knexfile.js",
     "seed:run": "knex seed:run --knexfile=./knexfile.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "keywords": [
     "file-share"

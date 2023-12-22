@@ -27,6 +27,14 @@ class UserService {
         return Database.insert(payload).into('users');
     }
 
+    async removeAccount(userId) {
+        const user = await this.getUser({id: userId});
+        if (!user || (Array.isArray(user) && user.length === 0)) {
+            throw new Error('Invalid user');
+        }
+        return Database('users').where('id', '=', userId).del();
+    }
+
 }
 
 export default new UserService();

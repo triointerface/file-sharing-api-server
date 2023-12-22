@@ -14,7 +14,7 @@ const upload = new multer();
 
 // File routes
 router.post('', uploadLimiter, AuthMiddleWare, upload.single('file'), fileController.uploadFile);
-router.get('/:publicKey', downloadLimiter, fileController.getFileByPublicKey);
 router.delete('/:privateKey', AuthMiddleWare, fileController.deleteFileByPrivateKey);
+router.get('/:publicKey', downloadLimiter, fileController.getFileByPublicKey);
 
 export default router;
