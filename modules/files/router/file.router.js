@@ -1,6 +1,7 @@
 // file.router.js
 import express from 'express';
 const router = express.Router();
+import AuthMiddleWare from '../../../middleware/auth.middleware.js';
 
 import FileController from '../controller/file.controller.js';
 import { uploadLimiter, downloadLimiter } from '../../../config/rate-limit.js';
@@ -12,8 +13,8 @@ const fileController = new FileController();
 const upload = new multer();
 
 // File routes
-router.post('', uploadLimiter, upload.single('file'), fileController.uploadFile);
+router.post('', uploadLimiter, AuthMiddleWare, upload.single('file'), fileController.uploadFile);
 router.get('/:publicKey', downloadLimiter, fileController.getFileByPublicKey);
-router.delete('/:privateKey', fileController.deleteFileByPrivateKey);
+router.delete('/:privateKey', AuthMiddleWare, fileController.deleteFileByPrivateKey);
 
 export default router;

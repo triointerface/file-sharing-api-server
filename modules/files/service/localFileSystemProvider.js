@@ -16,35 +16,30 @@ class FileAccess {
   // Method to upload a file
   async uploadFile(file) {
     const publicKey = uuidv4();
-    const publicFileName = `${publicKey}`;
+    const publicFileName = `${publicKey}_${file.originalname}`;
     const filePath = join(this.rootFolder, publicFileName);
 
     // Write the file to the specified path
     await promises.writeFile(filePath, file.buffer);
 
-    return { publicKey, filePath };
+    return { publicKey, filePath, provider: 'local' };
   }
 
   // Method to download a file
-  async downloadFile(publicKey) {
-    const privateFileName = `${publicKey}`;
-    const privatePath = join(this.rootFolder, privateFileName);
-
+  async downloadFile(filePath) {
     // Check if the file exists, and if so, create a readable stream
-    if (await promises.access(privatePath, constants.F_OK).then(() => true).catch(() => false)) {
-      return createReadStream(privatePath);
+    if (await promises.access(filePath, constants.F_OK).then(() => true).catch(() => false)) {
+      return createReadStream(filePath);
     } else {
       throw new Error('File not found');
     }
   }
 
   // Method to remove a file
-  async removeFile(privateKey) {
-    const privatePath = join(this.rootFolder, privateKey);
-
+  async removeFile(filePath) {
     // Check if the file exists, and if so, unlink it
-    if (await promises.access(privatePath, constants.F_OK).then(() => true).catch(() => false)) {
-      await promises.unlink(privatePath);
+    if (await promises.access(filePath, constants.F_OK).then(() => true).catch(() => false)) {
+      await promises.unlink(filePath);
       return { message: 'File removed successfully' };
     } else {
       throw new Error('File not found');

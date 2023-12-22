@@ -2,7 +2,7 @@ import LoginSchema from '../schema/user-login.schema.js';
 import RegistrationSchema from '../schema/user-registration.schema.js';
 import UserService from '../service/user.service.js';
 import bcryptJS from 'bcryptjs';
-import { GenerateToken } from '../../shared/service/jwt.service.js';
+import JwtService from '../../shared/service/jwt.service.js';
 
 class UserController {
 
@@ -16,12 +16,11 @@ class UserController {
             }
 
             const user = users.pop();
-            console.log('user: ', user);
-            if (!bcryptJS.compareSync(user.password, validationResponse.password)) {
+            if (!bcryptJS.compareSync(validationResponse.password, user.password)) {
                 throw new Error('Invalid credentials.');
             }
             delete user.password;
-            const token = GenerateToken(user);
+            const token = JwtService.GenerateToken(user);
             res.status(200).json(token);
         } catch (e) {
             res.status(500).json({ error: e.toString() });

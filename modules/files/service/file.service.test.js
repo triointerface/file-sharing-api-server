@@ -1,7 +1,7 @@
-// fileService.test.js
-import FileService from './file.service';
-import { prototype } from './localFileSystemProvider';
-import { provider } from '../../../config/env';
+// file.service.test.js
+import FileService from './file.service.js';
+import { prototype } from './localFileSystemProvider.js';
+import { provider } from '../../../config/env.js';
 
 jest.mock('./localFileSystemProvider');
 

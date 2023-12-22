@@ -1,4 +1,4 @@
-import { databaseHost, databasePassword, databaseUserName, databasePort, databaseName } from '../config/env.js';
+import { databaseHost, databasePassword, databaseUserName, databasePort, databaseName } from './config/env.js';
 import path from 'path';
 const __dirname = path.resolve();
 
@@ -19,11 +19,11 @@ export default {
     acquireConnectionTimeout: 20000,
     migrations: {
         tableName: 'migrations',
-        directory: __dirname + '/migrations',
+        directory: __dirname + '/./database/migrations',
         loadExtensions: ['.js']
     },
     seeds: {
-        directory: __dirname + '/seeds',
+        directory: __dirname + '/./database/seeds',
         loadExtensions: ['.js']
     },
 }
