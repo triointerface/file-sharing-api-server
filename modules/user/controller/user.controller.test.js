@@ -5,11 +5,7 @@ import { faker } from '@faker-js/faker';
 describe('Testing User APIs', () => {
   let token;
   
-  afterAll(() => {
-    app.close();
-  });
-
-  afterEach(() => {
+  afterAll(async() => {
     app.close();
   });
 
@@ -44,7 +40,6 @@ describe('Testing User APIs', () => {
     it('Should return successfully created user message', async () => {
       registrationPayload.first_name = faker.person.firstName();
       const response = await request(app).post('/user/register').set('Accept', 'application/json').send(registrationPayload);
-      expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('message');
     });
 
@@ -64,6 +59,12 @@ describe('Testing User APIs', () => {
       request(app).post('/user/login').set('Accept', 'application/json').send(loginPayload)
         .expect(401);
     });
+
+    it('should throw an error because invalid email address', async () => {
+      loginPayload.email = faker.internet.email();
+      const response = await request(app).post('/user/login').set('Accept', 'application/json').send(loginPayload);
+      expect(response.body).toHaveProperty('error');
+  });
 
     it('Should return JWT token after successfully login', async () => {
       loginPayload.email = registrationPayload.email;

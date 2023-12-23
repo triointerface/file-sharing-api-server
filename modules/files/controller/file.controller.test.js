@@ -15,7 +15,6 @@ describe('Tests for File API', () => {
     confirm_password: '89G1wJuBLbGziIs',
   }
 
-
   beforeAll(async () => {
     await request(app).post('/user/register').set('Accept', 'application/json').send(userCreationData);
     const response = await request(app).post('/user/login').set('Accept', 'application/json').send(userCreationData);
@@ -23,11 +22,6 @@ describe('Tests for File API', () => {
   });
 
   afterAll(async () => {
-    await request(app).delete('/user/remove-account').set('Authorization', `Bearer ${token}`);
-    app.close();
-  });
-
-  afterEach(() => {
     app.close();
   });
 
@@ -78,5 +72,10 @@ describe('Tests for File API', () => {
       .delete('/files/nonexistingprivatekey')
       .set('Authorization', `Bearer ${token}`)
       .expect(404);
+  });
+
+  it('remove the dummy account', async () => {
+    const response = await request(app).delete('/user/remove-account').set('Authorization', `Bearer ${token}`);
+    expect(response.body).toHaveProperty('message');
   });
 });
