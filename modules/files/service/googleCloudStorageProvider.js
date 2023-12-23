@@ -1,6 +1,6 @@
 // googleCloudStorageProvider.js
-
 import { Storage } from '@google-cloud/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 class GoogleCloudStorageProvider {
   constructor(configPath) {
@@ -17,19 +17,15 @@ class GoogleCloudStorageProvider {
   }
 
   async uploadFile(file) {
-    const publicKey = file.originalname;
-    const privatePath = `files/${publicKey}`;
-    const fileBuffer = file.buffer;
-
-    await this.storage.bucket(this.bucketName).file(privatePath).createWriteStream().end(fileBuffer);
-
-    return { publicKey, privateKey: privatePath };
+    const publicKey = uuidv4();
+    const publicFileName = `${publicKey}_${file.originalname}`;
+    const url = await this.storage.bucket(this.bucketName).file(publicFileName).createWriteStream().end(file.buffer);
+    return { publicKey, filePath: url, provider: 'google' };
   }
 
-  async downloadFile(publicKey) {
-    const privatePath = `files/${publicKey}`;
+  async downloadFile(file) {
 
-    const [file] = await this.storage.bucket(this.bucketName).file(privatePath).get();
+    const [file] = await this.storage.bucket(this.bucketName).file(file).get();
 
     if (!file) {
       throw new Error('File not found');
@@ -38,11 +34,9 @@ class GoogleCloudStorageProvider {
     return this.storage.bucket(this.bucketName).file(privatePath).createReadStream();
   }
 
-  async removeFile(privateKey) {
-    const privatePath = `files/${privateKey}`;
-
+  async removeFile(fileName) {
     try {
-      await this.storage.bucket(this.bucketName).file(privatePath).delete();
+      await this.storage.bucket(this.bucketName).file(fileName).delete();
       return { message: 'File removed successfully' };
     } catch (error) {
       throw new Error('File not found');
