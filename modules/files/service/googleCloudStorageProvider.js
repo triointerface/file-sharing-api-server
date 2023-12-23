@@ -6,7 +6,7 @@ class GoogleCloudStorageProvider {
   constructor(configPath) {
     // Load configuration from the provided file
     const config = require(configPath);
-    
+
     // Initialize Google Cloud Storage client
     this.storage = new Storage({
       projectId: config.projectId,

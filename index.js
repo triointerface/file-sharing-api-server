@@ -18,22 +18,22 @@ app.use('/', [router]);
 //     console.log(`Failed to migrate database due to: ${e}`);
 //   });
 // } catch (e) {
-  
+
 // }
 
 try {
- // Schedule a daily cleanup job
-cron.schedule(cleanUpCorn, async () => {
-  console.log('Running daily cleanup job...');
+  // Schedule a daily cleanup job
+  cron.schedule(cleanUpCorn, async () => {
+    console.log('Running daily cleanup job...');
   // Add logic here to cleanup files based on inactivity
   // For example, you can delete files older than a certain period
-}); 
+  });
 } catch (e) {
   console.log('Failed to run cleanup job...');
 }
 
 const server = app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  // console.log(`Server is running on port ${port}`);
 });
 
 export default server;

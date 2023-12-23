@@ -1,11 +1,12 @@
 // fileAccess.js
 
-import { existsSync, mkdirSync, promises, constants, createReadStream } from 'fs';
+import {
+  existsSync, mkdirSync, promises, constants, createReadStream,
+} from 'fs';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 class FileAccess {
-
   constructor(rootFolder) {
     this.rootFolder = rootFolder;
     if (!existsSync(this.rootFolder)) {
@@ -30,9 +31,8 @@ class FileAccess {
     // Check if the file exists, and if so, create a readable stream
     if (await promises.access(filePath, constants.F_OK).then(() => true).catch(() => false)) {
       return createReadStream(filePath);
-    } else {
-      throw new Error('File not found');
     }
+    throw new Error('File not found');
   }
 
   // Method to remove a file
@@ -41,9 +41,8 @@ class FileAccess {
     if (await promises.access(filePath, constants.F_OK).then(() => true).catch(() => false)) {
       await promises.unlink(filePath);
       return { message: 'File removed successfully' };
-    } else {
-      throw new Error('File not found');
     }
+    throw new Error('File not found');
   }
 }
 

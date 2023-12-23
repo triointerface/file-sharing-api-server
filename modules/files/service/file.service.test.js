@@ -1,91 +1,72 @@
-// file.service.test.js
 import FileService from './file.service.js';
-import LocalFileSystemProvider from './localFileSystemProvider.js';
-// import { jest } from '@jest/globals';
-import { provider } from '../../../config/env.js';
+import UserService from '../../user/service/user.service.js';
+import { faker } from '@faker-js/faker';
 
-// jest.mock('./localFileSystemProvider.js');
-
-const publicKey = '584b897f-5870-41c2-85e2-54c8d1d0c8dd';
-const privateKey = 'f8f7001a-fbd4-43b4-a95a-84922c4efb76';
-
-describe('Integration tests for FileService with Local Provider', () => {
+describe('File Service', () => {
   let fileService;
+  let user;
+  let privateKey;
+  let publicKey;
+  const userCreationData = {
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    email: faker.internet.email(),
+    password: '',
+  }
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    // Mocking the provider based on the environment
-    provider = 'local';
+  const mockFile = {
+    buffer: Buffer.from('test content'),
+    originalname: 'test.txt',
+    mimetype: 'text/plain'
+  };
+
+  beforeAll(async () => {
     fileService = new FileService();
+    await UserService.createUser(userCreationData);
+    const users = await UserService.getUser({email: userCreationData.email});
+    user = users[0];
   });
 
-  // Test uploadFile method
-  it('should upload a file and return public/private keys', async () => {
-    const mockFile = {
-      buffer: Buffer.from('test content'),
-      originalname: 'test.txt',
-    };
+  afterAll(async () => {
+    await UserService.removeAccount(user.id);
+  });
 
-    // Mock the provider's uploadFile method
-    LocalFileSystemProvider.prototype.uploadFile.mockResolvedValueOnce({
-      publicKey,
-      privateKey,
-    });
+  beforeEach(()=> {
+    jest.clearAllMocks();
+  });
 
-    const result = await fileService.uploadFile(mockFile);
-
+  // Mock the provider's uploadFile method
+  it('should upload file and return public, private key', async() => {
+    const result = await fileService.uploadFile(mockFile, user.id);
     expect(result).toHaveProperty('publicKey');
     expect(result).toHaveProperty('privateKey');
-    // Ensure that the provider's uploadFile method was called with the mock file
-    expect(LocalFileSystemProvider.prototype.uploadFile).toHaveBeenCalledWith(mockFile);
-  });
-
-//   Test downloadFile method
-  it('should download the uploaded file', async () => {
-    const mockPublicKey = publicKey;
-
-    // Mock the provider's downloadFile method
-    LocalFileSystemProvider.prototype.downloadFile.mockResolvedValueOnce(Buffer.from('test content'));
-
-    const result = await fileService.downloadFile(mockPublicKey);
-
-    expect(result).toEqual(Buffer.from('test content'));
-    // Ensure that the provider's downloadFile method was called with the mock public key
-    expect(LocalFileSystemProvider.prototype.downloadFile).toHaveBeenCalledWith(mockPublicKey);
-  });
-
-
-   // Test downloadFile method with file not found
-   it('should handle file not found error during download', async () => {
-    const mockPublicKey = 'nonExistingFilePublicKey';
-
-    // Mock the provider's downloadFile method to simulate a file not found error
-    LocalFileSystemProvider.prototype.downloadFile.mockRejectedValueOnce(new Error('File not found'));
-
-    await expect(fileService.downloadFile(mockPublicKey)).rejects.toThrow('File not found');
-    // Ensure that the provider's downloadFile method was called with the mock public key
-    expect(LocalFileSystemProvider.prototype.downloadFile).toHaveBeenCalledWith(mockPublicKey);
-  });
-
-
-  // Test removeFile method
-  it('should remove the uploaded file', async () => {
-    const mockPrivateKey = privateKey;
-
-    // Mock the provider's removeFile method
-    LocalFileSystemProvider.prototype.removeFile.mockResolvedValueOnce({ message: 'File removed successfully' });
-
-    const result = await fileService.removeFile(mockPrivateKey);
-
-    expect(result).toEqual({ message: 'File removed successfully' });
-    // Ensure that the provider's removeFile method was called with the mock private key
-    expect(LocalFileSystemProvider.prototype.removeFile).toHaveBeenCalledWith(mockPrivateKey);
-  });
-
-  it('should handle file not found error during removal', async () => {
-    const privateKey = 'invalidprivatekey';
-    LocalFileSystemProvider.prototype.removeFile.mockRejectedValueOnce(new Error('File not found'));
-    await expect(fileService.removeFile(privateKey)).rejects.toThrow('File not found');
+    publicKey = result.publicKey;
+    privateKey = result.privateKey;
   });
   
+  // Test downloadFile method with file not found 
+  it('should handle file not found error during download', async () => {
+    const invalidPublicKey = 'invalidPublicKey';
+    await expect(fileService.downloadFile(invalidPublicKey)).rejects.toThrow('File not found');
+  });
+
+  // Test downloadfile method
+  /**
+   * @Todo it return readable file stream. Need to check the jest file stream match
+   */
+  // it('should download the uploaded file', async () => {
+  //   const result = await fileService.downloadFile(publicKey);
+  // });
+
+  // Test Remove file with invalid private key and valid userId
+  it('should handle file not found error during removal', async () => {
+    const privateKey = 'InvalidPrivateKey';
+    await expect(fileService.removeFile(privateKey, user.id)).rejects.toThrow('File not found');
+  });
+
+  // Remove file with valid private key and userId
+  it('should remove the uploaded file', async () => {
+    const result = await fileService.removeFile(privateKey, user.id);
+    expect(result).toEqual({ message: 'File removed successfully' });
+  });
 });

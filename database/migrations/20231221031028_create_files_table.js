@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 export function up(knex) {
-  return knex.schema.createTable('files', function(table) {
+  return knex.schema.createTable('files', (table) => {
     table.uuid('public_key').unique().notNullable();
     table.uuid('private_key').unique().defaultTo(knex.fn.uuid());
     table.bigInteger('created_by').notNullable();

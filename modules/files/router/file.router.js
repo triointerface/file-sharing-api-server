@@ -1,11 +1,12 @@
 // file.router.js
 import express from 'express';
-const router = express.Router();
+import multer from 'multer';
 import AuthMiddleWare from '../../../middleware/auth.middleware.js';
 
 import FileController from '../controller/file.controller.js';
 import { uploadLimiter, downloadLimiter } from '../../../config/rate-limit.js';
-import multer from 'multer';
+
+const router = express.Router();
 
 const fileController = new FileController();
 
