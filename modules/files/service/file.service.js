@@ -44,7 +44,11 @@ class FileService {
     if (!files || (Array.isArray(files) && files.length === 0)) {
       throw new Error('File not found.');
     }
-    return this.provider.removeFile(files[0].url);
+    const removeFileResponse = await this.provider.removeFile(files[0].url);
+    if (removeFileResponse) {
+      await this.deleteFileInfo(files[0].publicKey, files[0].privateKey);
+    }
+    return removeFileResponse;
   }
 
   async insertFileInfo(data) {
@@ -55,6 +59,13 @@ class FileService {
         privateKey: result && result.length > 0 ? result[0].privateKey : null,
       };
     });
+  }
+
+  async deleteFileInfo(publicKey, privateKey) {
+    return Database('files').where({
+      'public_key': publicKey,
+      'private_key': privateKey
+    }).del();
   }
 
   async getFileInfo(searchParam = {}) {
@@ -75,6 +86,7 @@ class FileService {
 
     if (searchParam && searchParam.hasOwnProperty('created_at') && Common.isValidDate(searchParam.created_at)) {
       sql.andWhere('f.created_at', '<=', searchParam.created_at);
+      console.log('searchParam.created_at: ', searchParam.created_at);
     }
 
     if (searchParam && searchParam.hasOwnProperty('created_by') && searchParam.created_by > 0) {
