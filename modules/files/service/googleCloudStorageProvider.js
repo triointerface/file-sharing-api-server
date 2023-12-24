@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 class GoogleCloudStorageProvider {
   constructor(configPath) {
     // Load configuration from the provided file
+    // eslint-disable-next-line import/no-dynamic-require, global-require
     const config = require(configPath);
 
     // Initialize Google Cloud Storage client
@@ -19,19 +20,19 @@ class GoogleCloudStorageProvider {
   async uploadFile(file) {
     const publicKey = uuidv4();
     const publicFileName = `${publicKey}_${file.originalname}`;
-    const url = await this.storage.bucket(this.bucketName).file(publicFileName).createWriteStream().end(file.buffer);
+    const url = await this.storage
+      .bucket(this.bucketName)
+      .file(publicFileName)
+      .createWriteStream()
+      .end(file.buffer);
     return { publicKey, filePath: url, provider: 'google' };
   }
 
-  async downloadFile(file) {
-
-    const [file] = await this.storage.bucket(this.bucketName).file(file).get();
-
-    if (!file) {
-      throw new Error('File not found');
-    }
-
-    return this.storage.bucket(this.bucketName).file(privatePath).createReadStream();
+  async downloadFile(privatePath) {
+    return this.storage
+      .bucket(this.bucketName)
+      .file(privatePath)
+      .createReadStream();
   }
 
   async removeFile(fileName) {

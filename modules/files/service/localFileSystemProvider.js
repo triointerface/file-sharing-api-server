@@ -1,7 +1,11 @@
 // fileAccess.js
 
 import {
-  existsSync, mkdirSync, promises, constants, createReadStream,
+  existsSync,
+  mkdirSync,
+  promises,
+  constants,
+  createReadStream,
 } from 'fs';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +33,12 @@ class FileAccess {
   // Method to download a file
   async downloadFile(filePath) {
     // Check if the file exists, and if so, create a readable stream
-    if (await promises.access(filePath, constants.F_OK).then(() => true).catch(() => false)) {
+    if (
+      await promises
+        .access(filePath, constants.F_OK)
+        .then(() => true)
+        .catch(() => false)
+    ) {
       return createReadStream(filePath);
     }
     throw new Error('File not found');
@@ -38,7 +47,12 @@ class FileAccess {
   // Method to remove a file
   async removeFile(filePath) {
     // Check if the file exists, and if so, unlink it
-    if (await promises.access(filePath, constants.F_OK).then(() => true).catch(() => false)) {
+    if (
+      await promises
+        .access(filePath, constants.F_OK)
+        .then(() => true)
+        .catch(() => false)
+    ) {
       await promises.unlink(filePath);
       return { message: 'File removed successfully' };
     }

@@ -1,22 +1,22 @@
 import Database from '../../../database/connection.js';
 
 class UserService {
-  constructor() {}
-
   async getUser(searchParams = {}) {
-    const columns = [
-      'id', 'first_name', 'last_name', 'email', 'created_at',
-    ];
-    if (searchParams && searchParams.includePassword && searchParams.hasOwnProperty('includePassword')) {
+    const columns = ['id', 'first_name', 'last_name', 'email', 'created_at'];
+    if (
+      searchParams
+      && searchParams.includePassword
+      && Object.prototype.hasOwnProperty.call(searchParams, 'includePassword')
+    ) {
       columns.push('password');
     }
     const sql = Database.select(columns).from('users');
 
-    if (searchParams && searchParams.hasOwnProperty('email')) {
+    if (searchParams && Object.prototype.hasOwnProperty.call(searchParams, 'email')) {
       sql.andWhere('email', '=', searchParams.email);
     }
 
-    if (searchParams && searchParams.hasOwnProperty('id')) {
+    if (searchParams && Object.prototype.hasOwnProperty.call(searchParams, 'id')) {
       sql.andWhere('id', '=', searchParams.id);
     }
 

@@ -7,9 +7,14 @@ import JwtService from '../../shared/service/jwt.service.js';
 class UserController {
   async login(req, res) {
     try {
-      const validationResponse = await LoginSchema.validate(req.body, { strict: true });
+      const validationResponse = await LoginSchema.validate(req.body, {
+        strict: true,
+      });
       validationResponse.email = validationResponse.email.toLowerCase();
-      const users = await UserService.getUser({ email: validationResponse.email, includePassword: true });
+      const users = await UserService.getUser({
+        email: validationResponse.email,
+        includePassword: true,
+      });
 
       if (!users || (Array.isArray(users) && users.length === 0)) {
         throw new Error('Invalid credentials.');
@@ -29,19 +34,26 @@ class UserController {
 
   async register(req, res) {
     try {
-      const validationResponse = await RegistrationSchema.validate(req.body, { strict: true });
+      const validationResponse = await RegistrationSchema.validate(req.body, {
+        strict: true,
+      });
       validationResponse.email = validationResponse.email.toLowerCase();
-      const user = await UserService.getUser({ email: validationResponse.email });
+      const user = await UserService.getUser({
+        email: validationResponse.email,
+      });
       if (user && user.length > 0) {
         throw new Error('Email already used.');
       }
 
       delete validationResponse.confirm_password;
-      validationResponse.password = bcryptJS.hashSync(validationResponse.password, bcryptJS.genSaltSync(10));
+      validationResponse.password = bcryptJS.hashSync(
+        validationResponse.password,
+        bcryptJS.genSaltSync(10),
+      );
       const response = await UserService.createUser(validationResponse);
       if (Array.isArray(response) && response.length > 0) {
         res.status(201).json({
-          message: 'User created successfully'
+          message: 'User created successfully',
         });
       }
     } catch (e) {
@@ -53,7 +65,7 @@ class UserController {
     try {
       const response = await UserService.removeAccount(req.user.id);
       if (response) {
-        res.status(500).json({
+        res.status(202).json({
           message: 'Account removed successfully',
         });
       }

@@ -3,7 +3,7 @@ import { jwtPrivateKey } from '../../../config/env.js';
 
 class JwtService {
   GenerateToken(user) {
-    return jsonwebtoken.sign((user), jwtPrivateKey, { expiresIn: '7d' });
+    return jsonwebtoken.sign(user, jwtPrivateKey, { expiresIn: '7d' });
   }
 
   VerifyToken(token) {

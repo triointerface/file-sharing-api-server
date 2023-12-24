@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../../../index.js';
 import { faker } from '@faker-js/faker';
+import app from '../../../index.js';
 
 describe('Tests for File API', () => {
   let publicKey;
@@ -13,11 +13,17 @@ describe('Tests for File API', () => {
     email: faker.internet.email(),
     password: '89G1wJuBLbGziIs',
     confirm_password: '89G1wJuBLbGziIs',
-  }
+  };
 
   beforeAll(async () => {
-    await request(app).post('/user/register').set('Accept', 'application/json').send(userCreationData);
-    const response = await request(app).post('/user/login').set('Accept', 'application/json').send(userCreationData);
+    await request(app)
+      .post('/user/register')
+      .set('Accept', 'application/json')
+      .send(userCreationData);
+    const response = await request(app)
+      .post('/user/login')
+      .set('Accept', 'application/json')
+      .send(userCreationData);
     token = response.body;
   });
 
@@ -54,16 +60,16 @@ describe('Tests for File API', () => {
 
   // Test delete endpoint
   it('should delete the uploaded file', async () => {
-    const response = await request(app).delete(`/files/${privateKey}`).set('Authorization', `Bearer ${token}`);
+    const response = await request(app)
+      .delete(`/files/${privateKey}`)
+      .set('Authorization', `Bearer ${token}`);
 
     expect(response.body).toEqual({ message: 'File removed successfully' });
   });
 
   // Test non-existing file download
   it('should return 404 for non-existing file download', async () => {
-    request(app)
-      .get('/files/nonexistingpublickey')
-      .expect(404);
+    request(app).get('/files/nonexistingpublickey').expect(404);
   });
 
   // Test non-existing file delete
@@ -75,7 +81,9 @@ describe('Tests for File API', () => {
   });
 
   it('remove the dummy account', async () => {
-    const response = await request(app).delete('/user/remove-account').set('Authorization', `Bearer ${token}`);
+    const response = await request(app)
+      .delete('/user/remove-account')
+      .set('Authorization', `Bearer ${token}`);
     expect(response.body).toHaveProperty('message');
   });
 });

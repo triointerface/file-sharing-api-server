@@ -7,7 +7,8 @@
   "scripts": {
     "start": "ENVIRONMENT=production node index.js",
     "dev": "nodemon index.js",
-    "lint": "eslint --fix .  --ext .js",
+    "format": "prettier --write \"**/*.js\" \"**/*.js\"",
+    "lint": "eslint \"**/*.js\" --fix",
     "test": "ENVIRONMENT=test jest --maxWorkers=1 --forceExit",
     "migrate:make": "knex migrate:make $1 --knexfile=./knexfile.js",
     "migrate:up": "knex migrate:latest --knexfile=./knexfile.js",
@@ -19,6 +20,10 @@
   "keywords": [
     "file-share"
   ],
+  "engines" : { 
+    "npm" : ">=8.0.0",
+    "node" : ">=20"
+  },
   "author": "jobayer ahmed",
   "license": "ISC",
   "dependencies": {

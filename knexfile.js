@@ -1,6 +1,10 @@
 import path from 'path';
 import {
-  databaseHost, databasePassword, databaseUserName, databasePort, databaseName,
+  databaseHost,
+  databasePassword,
+  databaseUserName,
+  databasePort,
+  databaseName,
 } from './config/env.js';
 
 const dirname = path.resolve();

@@ -4,20 +4,17 @@ import FileService from '../service/file.service.js';
 const fileService = new FileService();
 
 class FileController {
-  constructor() {
-  }
-
-  async uploadFile(req, res) {
+  static async uploadFile(req, res) {
     try {
       const { file } = req;
       const result = await fileService.uploadFile(file, req.user.id);
       res.json(result);
     } catch (error) {
-      res.status(415).json({ error: error.message });
+      res.status(202).json({ error: error.message });
     }
   }
 
-  async getFileByPublicKey(req, res) {
+  static async getFileByPublicKey(req, res) {
     try {
       const { publicKey } = req.params;
       const fileStream = await fileService.downloadFile(publicKey);
@@ -27,7 +24,7 @@ class FileController {
     }
   }
 
-  async deleteFileByPrivateKey(req, res) {
+  static async deleteFileByPrivateKey(req, res) {
     try {
       const { privateKey } = req.params;
       const userId = req.user.id;

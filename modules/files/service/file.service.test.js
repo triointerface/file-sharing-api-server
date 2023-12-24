@@ -1,53 +1,55 @@
+import { faker } from '@faker-js/faker';
 import FileService from './file.service.js';
 import UserService from '../../user/service/user.service.js';
-import { faker } from '@faker-js/faker';
 
 describe('File Service', () => {
   let fileService;
   let user;
   let privateKey;
-  let publicKey;
+  // let publicKey;
   const userCreationData = {
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
     email: faker.internet.email(),
     password: '',
-  }
+  };
 
   const mockFile = {
     buffer: Buffer.from('test content'),
     originalname: 'test.txt',
-    mimetype: 'text/plain'
+    mimetype: 'text/plain',
   };
 
   beforeAll(async () => {
     fileService = new FileService();
     await UserService.createUser(userCreationData);
-    const users = await UserService.getUser({email: userCreationData.email});
-    user = users[0];
+    const users = await UserService.getUser({ email: userCreationData.email });
+    user = users.length > 0 ? users[0] : null;
   });
 
   afterAll(async () => {
     await UserService.removeAccount(user.id);
   });
 
-  beforeEach(()=> {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
   // Mock the provider's uploadFile method
-  it('should upload file and return public, private key', async() => {
+  it('should upload file and return public, private key', async () => {
     const result = await fileService.uploadFile(mockFile, user.id);
     expect(result).toHaveProperty('publicKey');
     expect(result).toHaveProperty('privateKey');
-    publicKey = result.publicKey;
+    // publicKey = result.publicKey;
     privateKey = result.privateKey;
   });
-  
-  // Test downloadFile method with file not found 
+
+  // Test downloadFile method with file not found
   it('should handle file not found error during download', async () => {
     const invalidPublicKey = 'invalidPublicKey';
-    await expect(fileService.downloadFile(invalidPublicKey)).rejects.toThrow('File not found');
+    await expect(fileService.downloadFile(invalidPublicKey)).rejects.toThrow(
+      'File not found',
+    );
   });
 
   // Test downloadfile method
@@ -60,8 +62,10 @@ describe('File Service', () => {
 
   // Test Remove file with invalid private key and valid userId
   it('should handle file not found error during removal', async () => {
-    const privateKey = 'InvalidPrivateKey';
-    await expect(fileService.removeFile(privateKey, user.id)).rejects.toThrow('File not found');
+    const invalidPrivateKey = 'InvalidPrivateKey';
+    await expect(fileService.removeFile(invalidPrivateKey, user.id)).rejects.toThrow(
+      'File not found',
+    );
   });
 
   // Remove file with valid private key and userId
