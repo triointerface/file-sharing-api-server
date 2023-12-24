@@ -7,7 +7,7 @@ const dirname = path.resolve();
 dotenv.config({ path: `${dirname}/.env` });
 
 export const maxUploadRequests = process.env.MAX_UPLOAD_REQUESTS || 50;
-export const maxDownloadRequests = process.env.MAX_DOWNLOAD_REQUESTS || 50;
+export const maxDownloadRequests = process.env.MAX_DOWNLOAD_REQUESTS || 200;
 export const provider = process.env.PROVIDER || 'local';
 export const folder = process.env.FOLDER || './uploads';
 export const config = process.env.CONFIG;
