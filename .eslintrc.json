@@ -15,6 +15,9 @@
     },
     "rules": {
         "class-methods-use-this": "off",
+        "no-empty-function": "off",
+        "no-unused-vars":"off",
+        "code": 200,
         "import/extensions": [
             "error",
             {
