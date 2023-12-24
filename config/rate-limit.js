@@ -4,7 +4,13 @@ import { maxUploadRequests, maxDownloadRequests } from './env.js';
 export const uploadLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
   max: maxUploadRequests, // Adjust the maximum number of requests
-  message: 'Too many upload requests from this IP, please try again later.',
+  statusCode: 200,
+  message: {
+    status: 429,
+    limiter: true,
+    type: "error",
+    errpr: 'maximum_accounts'
+  }
 });
 
 export const downloadLimiter = rateLimit({
