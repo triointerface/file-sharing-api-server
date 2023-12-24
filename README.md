@@ -161,11 +161,11 @@ Authenticate and log in a user.
 ### Response
 - **Status Code**: 202 Accepted
 - **Response Body**:
-```json
-{
-    "message": "Account removed successfully"
-}
-```
+    ```json
+    {
+        "message": "Account removed successfully"
+    }
+    ```
 
 ## 4. POST /files
 ### Description
