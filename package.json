@@ -20,9 +20,9 @@
   "keywords": [
     "file-share"
   ],
-  "engines" : { 
-    "npm" : ">=8.0.0",
-    "node" : ">=20"
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=20"
   },
   "author": "jobayer ahmed",
   "license": "ISC",
