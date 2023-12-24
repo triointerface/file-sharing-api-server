@@ -4,6 +4,7 @@ import UserService from '../../user/service/user.service.js';
 
 describe('File Service', () => {
   let fileService;
+  let userService;
   let user;
   let privateKey;
   // let publicKey;
@@ -21,14 +22,15 @@ describe('File Service', () => {
   };
 
   beforeAll(async () => {
+    userService = new UserService();
     fileService = new FileService();
-    await UserService.createUser(userCreationData);
-    const users = await UserService.getUser({ email: userCreationData.email });
+    await userService.createUser(userCreationData);
+    const users = await userService.getUser({ email: userCreationData.email });
     user = users.length > 0 ? users[0] : null;
   });
 
   afterAll(async () => {
-    await UserService.removeAccount(user.id);
+    await userService.removeAccount(user.id);
   });
 
   beforeEach(() => {
@@ -56,9 +58,11 @@ describe('File Service', () => {
   /**
    * @Todo it return readable file stream. Need to check the jest file stream match
    */
-  // it('should download the uploaded file', async () => {
-  //   const result = await fileService.downloadFile(publicKey);
-  // });
+  /**
+    it('should download the uploaded file', async () => {
+    const result = await fileService.downloadFile(publicKey);
+    });
+   */
 
   // Test Remove file with invalid private key and valid userId
   it('should handle file not found error during removal', async () => {

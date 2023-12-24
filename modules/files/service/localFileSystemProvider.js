@@ -1,5 +1,3 @@
-// fileAccess.js
-
 import {
   existsSync,
   mkdirSync,
@@ -18,7 +16,12 @@ class FileAccess {
     }
   }
 
-  // Method to upload a file
+  /**
+ * @param {object} file - The file to be uploaded.
+ * @returns {Promise<{publicKey: string, filePath: string, provider: string}>} - A promise that resolves to an object containing
+ * the public key, file path, and provider information associated with the uploaded file.
+ * @throws {Error} - Throws an error if the file upload fails.
+ */
   async uploadFile(file) {
     const publicKey = uuidv4();
     const publicFileName = `${publicKey}_${file.originalname}`;
@@ -30,7 +33,11 @@ class FileAccess {
     return { publicKey, filePath, provider: 'local' };
   }
 
-  // Method to download a file
+  /**
+ * @param {string} filePath - The absolute path to the file to be downloaded.
+ * @returns {Promise<ReadStream>} - A promise that resolves to a readable stream representing the file.
+ * @throws {Error} - Throws an error if the file is not found.
+ */
   async downloadFile(filePath) {
     // Check if the file exists, and if so, create a readable stream
     if (
@@ -44,7 +51,11 @@ class FileAccess {
     throw new Error('File not found');
   }
 
-  // Method to remove a file
+  /**
+ * @param {string} filePath - The absolute path to the file to be removed.
+ * @returns {Promise<{message: string}>} - A promise that resolves to an object containing a success message after file removal.
+ * @throws {Error} - Throws an error if the file is not found or if the removal operation fails.
+ */
   async removeFile(filePath) {
     // Check if the file exists, and if so, unlink it
     if (

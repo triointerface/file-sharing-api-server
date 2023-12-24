@@ -1,5 +1,9 @@
 import * as yup from 'yup';
 
+/**
+ * Validation schema for user registration using the Yup library.
+ * @type {Object}
+ */
 const schema = yup.object({
   first_name: yup.string().min(2).max(30).required(),
   last_name: yup.string().min(2).max(30).required(),

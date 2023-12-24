@@ -1,5 +1,10 @@
 import * as yup from 'yup';
 
+/**
+ * Validation schema for user login using the Yup library.
+ * @type {Object}
+ */
+
 const schema = yup.object({
   email: yup
     .string()

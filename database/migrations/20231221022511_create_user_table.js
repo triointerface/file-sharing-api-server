@@ -1,4 +1,5 @@
 /**
+ * user table
  * @param { import('knex').Knex } knex
  * @returns { Promise<void> }
  */

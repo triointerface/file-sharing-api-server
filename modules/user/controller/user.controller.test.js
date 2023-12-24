@@ -17,6 +17,7 @@ describe('Testing User APIs', () => {
     confirm_password: 'confirm password',
   };
 
+  // test registration endpoints
   describe('POST /user/register', () => {
     it('Should throw an error because of password mismatch', async () => {
       request(app)
@@ -64,6 +65,7 @@ describe('Testing User APIs', () => {
     });
   });
 
+  // test login endpoints
   describe('POST /user/login', () => {
     const loginPayload = {
       email: 'Jobayer@',
@@ -97,6 +99,7 @@ describe('Testing User APIs', () => {
     });
   });
 
+  // test delete account endpoints
   describe('DELETE /user/remove-account', () => {
     it('Should return Invalid Authorization header', async () => {
       const response = await request(app).delete('/user/remove-account');

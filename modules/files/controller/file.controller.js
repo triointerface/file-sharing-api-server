@@ -4,7 +4,13 @@ import FileService from '../service/file.service.js';
 const fileService = new FileService();
 
 class FileController {
-  static async uploadFile(req, res) {
+  /**
+  * Upload file
+  * @param {Object} req - The Express.js request object.
+  * @param {Object} res - The Express.js response object.
+  * @returns {void} - Sends a JSON response to the client.
+  */
+  async uploadFile(req, res) {
     try {
       const { file } = req;
       const result = await fileService.uploadFile(file, req.user.id);
@@ -14,7 +20,13 @@ class FileController {
     }
   }
 
-  static async getFileByPublicKey(req, res) {
+  /** 
+   * @param {Object} req - The Express.js request object containing the public key as a parameter.
+   * @param {Object} res - The Express.js response object.
+   * @returns {void} - Streams the file content to the client as a response or sends a JSON error response if the file is not found.
+   */
+
+  async downloadFile(req, res) {
     try {
       const { publicKey } = req.params;
       const fileStream = await fileService.downloadFile(publicKey);
@@ -24,7 +36,12 @@ class FileController {
     }
   }
 
-  static async deleteFileByPrivateKey(req, res) {
+  /**
+   * @param {Object} req - The Express.js request object containing the private key as a parameter.
+   * @param {Object} res - The Express.js response object.
+   * @returns {void} - Sends a JSON response to the client indicating the success of the file removal or sends a JSON error response if the file is not found.
+   */
+  async removeFile(req, res) {
     try {
       const { privateKey } = req.params;
       const userId = req.user.id;

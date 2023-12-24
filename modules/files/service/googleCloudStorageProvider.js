@@ -17,32 +17,23 @@ class GoogleCloudStorageProvider {
     this.bucketName = config.bucketName;
   }
 
-  async uploadFile(file) {
-    const publicKey = uuidv4();
-    const publicFileName = `${publicKey}_${file.originalname}`;
-    const url = await this.storage
-      .bucket(this.bucketName)
-      .file(publicFileName)
-      .createWriteStream()
-      .end(file.buffer);
-    return { publicKey, filePath: url, provider: 'google' };
-  }
+  /**
+   * @param {File} file - The file to be uploaded.
+   * @todo Implement this function when integrating the Google Cloud Storage provider.
+   */
+  async uploadFile(file) { }
 
-  async downloadFile(privatePath) {
-    return this.storage
-      .bucket(this.bucketName)
-      .file(privatePath)
-      .createReadStream();
-  }
+  /**
+   * @param {String} fileURL - The file url to be downloaded.
+   * @todo Implement this function when integrating the Google Cloud Storage provider.
+   */
+  async downloadFile(fileURL) {}
 
-  async removeFile(fileName) {
-    try {
-      await this.storage.bucket(this.bucketName).file(fileName).delete();
-      return { message: 'File removed successfully' };
-    } catch (error) {
-      throw new Error('File not found');
-    }
-  }
+  /**
+   * @param {String} fileURL - The file url to be downloaded.
+   * @todo Implement this function when integrating the Google Cloud Storage provider.
+   */
+  async removeFile(fileURL) {}
 }
 
 export default GoogleCloudStorageProvider;
