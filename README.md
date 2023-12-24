@@ -10,16 +10,14 @@ Brief description of your backend project.
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Endpoints](#endpoints)
-  - [1. POST /user/register](#1-post-user-register)
-  - [2. POST /user/login](#2-post-user-login)
-  - [3. DELETE /user/remove-account](#3-delete-user-remove-account)
+  - [1. POST /user/register](#1-post-userregister)
+  - [2. POST /user/login](#2-post-userlogin)
+  - [3. DELETE /user/remove-account](#3-delete-userremove-account)
   - [4. POST /files](#4-post-files)
   - [5. GET /files/:publicKey](#5-get-filespublickey)
   - [6. DELETE /files/:privateKey](#6-delete-filesprivatekey)
-- [File Access Functionality](#file-access-functionality)
 - [Limits and Cleanup](#limits-and-cleanup)
 - [Testing](#testing)
-- [Optional: Google Cloud Storage Provider](#optional-google-cloud-storage-provider)
 - [License](#license)
 
 ## Overview
@@ -107,7 +105,6 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
         ```
 # Endpoints
 ## 1. POST /user/register
-
 ### Description
 Register a new user account.
 ### Request
