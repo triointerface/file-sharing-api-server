@@ -16,9 +16,9 @@ Brief description of your backend project.
   - [4. POST /files](#4-post-files)
   - [5. GET /files/:publicKey](#5-get-filespublickey)
   - [6. DELETE /files/:privateKey](#6-delete-filesprivatekey)
-- [Limits and Cleanup](#limits-and-cleanup)
+- [Configurable Daily Limits](#configurable-daily-limits)
+- [Cleanup](#cleanup)
 - [Testing](#testing)
-- [License](#license)
 
 ## Overview
  The API Server project is designed to provide a robust and flexible file management system through HTTP REST API endpoints. The primary functionalities include uploading new files, downloading existing files, and removing files. The project adheres to best practices by implementing modular components, enabling easy extension to various storage providers, and ensuring robustness through configurable limits and cleanup mechanisms.
@@ -51,7 +51,7 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
         FOLDER=./uploads #local file upload directory
         MAX_UPLOAD_REQUESTS=50 # daily upload limit
         MAX_DOWNLOAD_REQUESTS=50 # daily download limit
-        CLEANUP_CRON='0 0 * * *' #set your valid daily corn to remove inactive file. Default is '0 0 * * *'.
+        CLEANUP_CRON='0 0 * * *' #set your valid daily corn to remove inactive file. Default is '0 0 * * *' (Every day at 12.00 AM)
         PORT=3000 # server port
 
         # Database configuration
@@ -99,9 +99,16 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
         npm run migrate:up
         ```
 
-    3. Run project
+    3. Run project:
+
+        **Production mode:**
         ```bash
         npm start
+        ```
+
+        **Development mode:**
+        ```bash
+        npm run dev
         ```
 # Endpoints
 ## 1. POST /user/register
@@ -217,4 +224,11 @@ Remove an existing file.
     }
     ```
 
+## Configurable Daily Limits:
+The API Server implements configurable daily download and upload limits for network traffic from the same IP address. This ensures control and security over the usage of the API. The default daily upload limit is 50 and download limit is 200.
 
+## Cleanup
+The API Server incorporates an internal job to clean up uploaded files more than 6 months ago. This feature ensures efficient resource utilization and prevents unnecessary storage occupation.
+
+## Testing
+Testing using the `npm test` command.
