@@ -3,6 +3,9 @@ import FileService from '../modules/files/service/file.service.js';
 
 const fileService = new FileService();
 
+/**
+ * Remove the inactive files
+ */
 const removeInactiveFiles = async () => {
   try {
     const sixMonthAgoDateTime = Common.addMonth(new Date(), -6);
@@ -14,7 +17,6 @@ const removeInactiveFiles = async () => {
       && uploadedFilesMoreThan6MonthAgo.length > 0
     ) {
       await Promise.all(
-        // eslint-disable-next-line max-len
         uploadedFilesMoreThan6MonthAgo.map((file) => fileService.removeFile(file.privateKey, file.userId).catch(() => {})),
       );
     }
