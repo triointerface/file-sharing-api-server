@@ -1,6 +1,5 @@
 # Project Name
-
-Brief description of your backend project.
+File Sharing API Server
 
 ## Table of Contents
 
@@ -80,7 +79,7 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
     - This project interacts with a MySQL database. Ensure you have run the MySQL docker container. Follow the steps below to run MYSQL container:
     **Database Setup:**
         ```bash
-        docker run -d --name mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=meldcx -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin mysql:latest
+        sudo docker run -d --name mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=meldcx -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin mysql:latest
         ```
 5. **Installation & Run**
     1. Install all dependencies
