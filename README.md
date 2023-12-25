@@ -56,9 +56,9 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
 
         # Database configuration
         DATABASE_HOST=localhost 
-        DATABASE_PORT=3306
-        DATABASE_USERNAME=user
-        DATABASE_PASSWORD=user
+        DATABASE_PORT=3307
+        DATABASE_USERNAME=admin
+        DATABASE_PASSWORD=admin
         DATABASE_NAME=meldcx
 
         # JWT private key
@@ -71,21 +71,10 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
 
 
 4. **Database (MySQL):**
-    - This project interacts with a MySQL database. Ensure you have MySQL installed and follow the steps below to set up the database:
-    
+    - This project interacts with a MySQL database. Ensure you have run the MySQL docker container. Follow the steps below to run MYSQL container:
     **Database Setup:**
-     1. Install MySQ
-     2. Create a new database for the project:
-
-        ```sql
-            CREATE DATABASE meldcx;
-        ```
-
-    3. Create a user and grant privileges:
-        ```sql
-          CREATE USER 'your_user'@'localhost' IDENTIFIED BY 'your_password';
-          GRANT ALL PRIVILEGES ON meldcx.* TO 'your_user'@'localhost';
-          FLUSH PRIVILEGES;
+        ```bash
+        docker run -d --name mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=meldcx -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin mysql:latest
         ```
 5. **Installation & Run**
     1. Install all dependencies
