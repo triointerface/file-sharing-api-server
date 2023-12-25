@@ -37,6 +37,9 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
         ```bash
         nvm install 20
         ```
+        ```bash
+        nvm use 20
+        ```
 2. **npm (Node Package Manager):**
    - npm is included with Node.js. Verify the npm version:
 
