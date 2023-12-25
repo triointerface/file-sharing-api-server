@@ -10,11 +10,11 @@ class GoogleCloudStorageProvider {
 
     // Initialize Google Cloud Storage client
     this.storage = new Storage({
-      projectId: config.projectId,
-      keyFilename: config.keyFilename,
+      projectId: config.project_id,
+      keyFilename: config.private_key_id,
     });
 
-    this.bucketName = config.bucketName;
+    this.bucketName = 'bucket-name';
   }
 
   /**

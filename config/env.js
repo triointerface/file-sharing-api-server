@@ -24,4 +24,4 @@ export const jwtPrivateKey = (process.env.ENVIRONMENT || 'local') === 'productio
   ? process.env.JWT_PRIVATE_KEY_PRODUCATION
   : process.env.JWT_PRIVATE_KEY_LOCAL;
 export const environment = process.env.ENVIRONMENT;
-export const isMigrationEnabled = (+process.env.MIGRATION_ENABLED || 0) === 1;
+export const isMigrationEnabled = (+process.env.MIGRATION_ENABLED || 1) === 1;

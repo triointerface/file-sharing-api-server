@@ -61,6 +61,9 @@ Before setting up and running the Node.js File Sharing API Server project, ensur
         DATABASE_PASSWORD=admin
         DATABASE_NAME=meldcx
 
+        # Run migration files when run the project. 0 = false, 1 = true; default 1;
+        MIGRATION_ENABLED=1
+
         # JWT private key
         JWT_PRIVATE_KEY_LOCAL=7Vlo8B43hkWWFa3J
         JWT_PRIVATE_KEY_PRODUCATION=7Vlo8B43hkWWF
